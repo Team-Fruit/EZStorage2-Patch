@@ -6,7 +6,8 @@
     "mcversion": "${mcversion}",
     "logoFile": "",
     "url": "",
-    "authorList": [],
-    "credits": "",
-    "dependencies": []
+    "authorList": ["sjcl"],
+    "credits": "zerofall, SBlectric for EZStorage2",
+    "dependencies": [],
+    "requiredMods": ["ezstorage"]
 }]
