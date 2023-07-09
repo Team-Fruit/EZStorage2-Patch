@@ -5,6 +5,7 @@ import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.teamfruit.ezstorage2patch.IEZInventory;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,6 +13,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -23,6 +25,13 @@ public abstract class MixinContainerStorageCore extends Container {
 
     @Invoker(value = "rowCount", remap = false)
     protected abstract int invokeRowCount();
+
+    private IInventory inventory;
+
+    @Inject(method = "<init>", at = @At(value = "TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
+    private void injectConstructor(EntityPlayer player, World world, int x, int y, int z, CallbackInfo ci, int startingY, int startingX, IInventory inventory) {
+        this.inventory = inventory;
+    }
 
     @Inject(method = "slotClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Container;slotClick(IILnet/minecraft/inventory/ClickType;Lnet/minecraft/entity/player/EntityPlayer;)Lnet/minecraft/item/ItemStack;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private void injectSlotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player, CallbackInfoReturnable<ItemStack> cir, ItemStack val) {
@@ -88,6 +97,6 @@ public abstract class MixinContainerStorageCore extends Container {
 
     @Override
     public boolean canDragIntoSlot(@NotNull Slot slotIn) {
-        return !(slotIn.inventory instanceof InventoryBasic);
+        return !slotIn.inventory.equals(this.inventory);
     }
 }
