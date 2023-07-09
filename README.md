@@ -12,4 +12,4 @@
 
 Thanks to
 
-* zerofall for [EZStorage2](https://github.com/zerofall/EZStorage2)
+* zerofall, SBlectric for [EZStorage2](https://github.com/zerofall/EZStorage2)
