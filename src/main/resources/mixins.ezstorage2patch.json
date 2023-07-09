@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "package": "net.teamfruit.ezstorage2patch.mixin",
+  "refmap": "mixins.ezstorage2patch.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinItemDolly",
+    "MixinContainerStorageCore",
+    "MixinContainerStorageCoreCrafting"
+  ],
+  "server": [
+  ],
+  "client": [
+    "MixinEZInventory"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
