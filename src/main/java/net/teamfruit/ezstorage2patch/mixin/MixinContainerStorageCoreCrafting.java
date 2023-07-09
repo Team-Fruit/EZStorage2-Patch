@@ -16,17 +16,17 @@ public class MixinContainerStorageCoreCrafting extends ContainerStorageCore {
         super(player, world, x, y, z);
     }
 
-    @Redirect(method = "transferStackInSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isItemEqual(Lnet/minecraft/item/ItemStack;)Z", ordinal = 0), remap = false)
+    @Redirect(method = "transferStackInSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isItemEqual(Lnet/minecraft/item/ItemStack;)Z", ordinal = 0))
     private boolean redirectTransferStackInSlotIsItemEqual0(ItemStack stack, ItemStack other) {
         return true;
     }
 
-    @Redirect(method = "transferStackInSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isItemEqual(Lnet/minecraft/item/ItemStack;)Z", ordinal = 1), remap = false)
+    @Redirect(method = "transferStackInSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isItemEqual(Lnet/minecraft/item/ItemStack;)Z", ordinal = 1))
     private boolean redirectTransferStackInSlotIsItemEqual1(ItemStack stack, ItemStack other) {
         return false;
     }
 
-    @Redirect(method = "transferStackInSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/InventoryCrafting;getStackInSlot(I)Lnet/minecraft/item/ItemStack;", ordinal = 0), remap = false)
+    @Redirect(method = "transferStackInSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/InventoryCrafting;getStackInSlot(I)Lnet/minecraft/item/ItemStack;", ordinal = 0))
     private ItemStack redirectTransferStackInSlotGetStackInSlot(InventoryCrafting inv, int index) {
         return inv.getStackInSlot(index).copy();
     }
@@ -36,7 +36,7 @@ public class MixinContainerStorageCoreCrafting extends ContainerStorageCore {
         return Integer.MAX_VALUE;
     }
 
-    @Redirect(method = "tryToPopulateCraftingGrid", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;setCount(I)V"), remap = false)
+    @Redirect(method = "tryToPopulateCraftingGrid", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;setCount(I)V"))
     private void redirectTryToPopulateCraftingGridSetCount(ItemStack itemStack, int count) {
         if (itemStack.getCount() > 1) {
             itemStack.setCount(itemStack.getCount() - 1);

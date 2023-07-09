@@ -24,7 +24,7 @@ public abstract class MixinContainerStorageCore extends Container {
     @Invoker(value = "rowCount", remap = false)
     protected abstract int invokeRowCount();
 
-    @Inject(method = "slotClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Container;slotClick(IILnet/minecraft/inventory/ClickType;Lnet/minecraft/entity/player/EntityPlayer;)Lnet/minecraft/item/ItemStack;"), remap = false, locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+    @Inject(method = "slotClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Container;slotClick(IILnet/minecraft/inventory/ClickType;Lnet/minecraft/entity/player/EntityPlayer;)Lnet/minecraft/item/ItemStack;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private void injectSlotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player, CallbackInfoReturnable<ItemStack> cir, ItemStack val) {
         if (slotId != -999) {
             Slot slot = this.getSlot(slotId);
