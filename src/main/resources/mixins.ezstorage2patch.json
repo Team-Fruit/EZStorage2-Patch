@@ -13,6 +13,7 @@
   "server": [
   ],
   "client": [
+    "MixinGuiStorageCore"
   ],
   "injectors": {
     "defaultRequire": 1
