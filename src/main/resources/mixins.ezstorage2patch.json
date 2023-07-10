@@ -6,13 +6,13 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinItemDolly",
+    "MixinEZInventory",
     "MixinContainerStorageCore",
     "MixinContainerStorageCoreCrafting"
   ],
   "server": [
   ],
   "client": [
-    "MixinEZInventory"
   ],
   "injectors": {
     "defaultRequire": 1
