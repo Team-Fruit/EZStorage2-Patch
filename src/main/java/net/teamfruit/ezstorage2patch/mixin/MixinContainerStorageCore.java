@@ -35,7 +35,7 @@ public abstract class MixinContainerStorageCore extends Container {
 
     @Inject(method = "slotClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Container;slotClick(IILnet/minecraft/inventory/ClickType;Lnet/minecraft/entity/player/EntityPlayer;)Lnet/minecraft/item/ItemStack;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private void injectSlotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player, CallbackInfoReturnable<ItemStack> cir, ItemStack val) {
-        if (slotId != -999) {
+        if (slotId >= 0) {
             Slot slot = this.getSlot(slotId);
             if (!(slot instanceof SlotCrafting) && clickTypeIn == ClickType.QUICK_MOVE && slot.canTakeStack(player)) {
                 ItemStack itemStack = slot.getStack();
