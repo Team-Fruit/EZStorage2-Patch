@@ -8,7 +8,8 @@
     "MixinItemDolly",
     "MixinEZInventory",
     "MixinContainerStorageCore",
-    "MixinContainerStorageCoreCrafting"
+    "MixinContainerStorageCoreCrafting",
+    "MixinTileEntityStorageCore"
   ],
   "server": [
   ],
