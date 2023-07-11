@@ -14,7 +14,8 @@
   "server": [
   ],
   "client": [
-    "MixinGuiStorageCore"
+    "MixinGuiStorageCore",
+    "MixinEZItemRenderer"
   ],
   "injectors": {
     "defaultRequire": 1
