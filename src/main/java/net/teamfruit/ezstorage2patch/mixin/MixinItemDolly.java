@@ -37,7 +37,6 @@ public abstract class MixinItemDolly extends EZItem {
     @Inject(method = "onItemUse", at = @At("HEAD"), remap = false, cancellable = true)
     private void injectOnItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ, CallbackInfoReturnable<EnumActionResult> cir) {
         cir.setReturnValue(EnumActionResult.PASS);
-        cir.cancel();
     }
 
     @Override
@@ -163,7 +162,9 @@ public abstract class MixinItemDolly extends EZItem {
     @Override
     public int getItemStackLimit(ItemStack stack) {
         NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt != null && nbt.getBoolean("isFull")) return 1;
+        if (nbt != null && nbt.getBoolean("isFull")) {
+            return 1;
+        }
         return super.getItemStackLimit(stack);
     }
 }
