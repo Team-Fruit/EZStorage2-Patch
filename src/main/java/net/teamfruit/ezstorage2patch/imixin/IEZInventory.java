@@ -1,4 +1,4 @@
-package net.teamfruit.ezstorage2patch;
+package net.teamfruit.ezstorage2patch.imixin;
 
 import net.minecraft.item.ItemStack;
 

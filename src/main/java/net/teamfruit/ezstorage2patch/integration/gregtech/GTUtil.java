@@ -1,10 +1,10 @@
-package net.teamfruit.ezstorage2patch;
+package net.teamfruit.ezstorage2patch.integration.gregtech;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class GTCompat {
+public class GTUtil {
 
     public static boolean stackEqualGT(ItemStack stack1, ItemStack stack2) {
         Item item1 = stack1.getItem();

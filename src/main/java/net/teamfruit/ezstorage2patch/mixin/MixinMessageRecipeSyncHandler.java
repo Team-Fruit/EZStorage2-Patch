@@ -8,8 +8,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.teamfruit.ezstorage2patch.GTCompat;
-import net.teamfruit.ezstorage2patch.IEZInventory;
+import net.teamfruit.ezstorage2patch.integration.gregtech.GTUtil;
+import net.teamfruit.ezstorage2patch.imixin.IEZInventory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,7 +37,7 @@ public abstract class MixinMessageRecipeSyncHandler {
 
         for (ItemStack searchItemStack : this.recipe[x]) {
             for (ItemStack invItemStack : player.inventory.mainInventory) {
-                if (EZInventory.stacksEqualOreDict(searchItemStack, invItemStack) || GTCompat.stackEqualGT(searchItemStack, invItemStack)) {
+                if (EZInventory.stacksEqualOreDict(searchItemStack, invItemStack) || GTUtil.stackEqualGT(searchItemStack, invItemStack)) {
                     player.inventory.deleteStack(invItemStack);
                     slot.putStack(invItemStack);
                     return;

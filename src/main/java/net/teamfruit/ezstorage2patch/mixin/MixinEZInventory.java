@@ -5,8 +5,8 @@ import com.zerofall.ezstorage.util.ItemGroup;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.teamfruit.ezstorage2patch.GTCompat;
-import net.teamfruit.ezstorage2patch.IEZInventory;
+import net.teamfruit.ezstorage2patch.integration.gregtech.GTUtil;
+import net.teamfruit.ezstorage2patch.imixin.IEZInventory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Invoker;
@@ -85,7 +85,7 @@ public abstract class MixinEZInventory implements IEZInventory {
 
             for (ItemGroup invItemGroup : this.inventory) {
                 int searchItemCount = searchItemStack.getCount();
-                if (GTCompat.stackEqualGT(searchItemStack, invItemGroup.itemStack) && searchItemCount <= invItemGroup.count) {
+                if (GTUtil.stackEqualGT(searchItemStack, invItemGroup.itemStack) && searchItemCount <= invItemGroup.count) {
                     ItemStack retrieved = invItemGroup.itemStack.copy();
                     retrieved.setCount(searchItemCount);
                     invItemGroup.count -= searchItemCount;
