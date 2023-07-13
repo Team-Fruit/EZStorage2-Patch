@@ -9,7 +9,8 @@
     "MixinEZInventory",
     "MixinContainerStorageCore",
     "MixinContainerStorageCoreCrafting",
-    "MixinTileEntityStorageCore"
+    "MixinTileEntityStorageCore",
+    "MixinMessageRecipeSyncHandler"
   ],
   "server": [
   ],

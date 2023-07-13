@@ -11,4 +11,6 @@ public interface IEZInventory {
     default ItemStack input(ItemStack itemStack, int quantity) {
         return this.input(itemStack, quantity, true);
     }
+
+    ItemStack getItemsForRecipeSync(ItemStack[] itemStacks);
 }
