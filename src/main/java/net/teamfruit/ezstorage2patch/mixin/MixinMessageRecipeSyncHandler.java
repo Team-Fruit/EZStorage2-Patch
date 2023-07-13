@@ -24,12 +24,12 @@ public abstract class MixinMessageRecipeSyncHandler {
     @Shadow(remap = false)
     private ItemStack[][] recipe;
 
-    @Redirect(method = "handle", at = @At(value = "INVOKE", target = "Lcom/zerofall/ezstorage/util/EZInventory;getItems([Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;", remap = false), remap = false)
+    @Redirect(method = "handle", at = @At(value = "INVOKE", target = "Lcom/zerofall/ezstorage/util/EZInventory;getItems([Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;"), remap = false)
     private ItemStack redirectHandleGetItems(EZInventory inventory, ItemStack[] itemStacks) {
         return ((IEZInventory) (Object) inventory).getItemsForRecipeSync(itemStacks);
     }
 
-    @Inject(method = "handle", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z"), remap = false, locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "handle", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z"), locals = LocalCapture.CAPTURE_FAILHARD)
     private void injectHandle(EntityPlayerMP player, MessageRecipeSync message, CallbackInfo ci, Container container, ContainerStorageCoreCrafting con, TileEntityStorageCore tileEntity, int x, Slot slot, ItemStack retreived) {
         if (!retreived.isEmpty()) {
             return;
