@@ -2,24 +2,41 @@ package net.teamfruit.ezstorage2patch.mixin;
 
 import com.zerofall.ezstorage.gui.client.GuiContainerEZ;
 import com.zerofall.ezstorage.gui.client.GuiStorageCore;
+import com.zerofall.ezstorage.util.ItemGroup;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.inventory.Container;
+import net.teamfruit.ezstorage2patch.imixin.IGuiStorageCore;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.List;
+
 @Mixin(GuiStorageCore.class)
-public abstract class MixinGuiStorageCore extends GuiContainerEZ {
+public abstract class MixinGuiStorageCore extends GuiContainerEZ implements IGuiStorageCore {
+
+    @Shadow(remap = false)
+    private List<ItemGroup> filteredList;
 
     public MixinGuiStorageCore(Container inventorySlotsIn) {
         super(inventorySlotsIn);
     }
 
+    @Override
+    public List<ItemGroup> getFilteredList() {
+        return this.filteredList;
+    }
+
+    @Override
+    @Invoker(value = "getSlotAt", remap = false)
+    public abstract Integer invokeGetSlotAt(int x, int y);
+
     @Invoker(value = "searchBoxChange", remap = false)
-    protected abstract void invokeSearchBoxChange(String text);
+    public abstract void invokeSearchBoxChange(String text);
 
     @Inject(method = "drawScreen", at = @At(value = "TAIL"))
     private void injectDrawScreen(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {

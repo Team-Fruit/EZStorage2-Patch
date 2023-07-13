@@ -1,0 +1,26 @@
+package net.teamfruit.ezstorage2patch.integration.jei;
+
+import com.zerofall.ezstorage.gui.client.GuiStorageCore;
+import mezz.jei.api.gui.IAdvancedGuiHandler;
+import net.teamfruit.ezstorage2patch.imixin.IGuiStorageCore;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public class JEIGuiHandler implements IAdvancedGuiHandler<GuiStorageCore> {
+
+    @Override
+    public @NotNull Class<GuiStorageCore> getGuiContainerClass() {
+        return GuiStorageCore.class;
+    }
+
+    @Nullable
+    @Override
+    public Object getIngredientUnderMouse(GuiStorageCore guiStorageCore, int mouseX, int mouseY) {
+        IGuiStorageCore mixinGuiStorageCore = ((IGuiStorageCore) (Object) guiStorageCore);
+        Integer slot = mixinGuiStorageCore.invokeGetSlotAt(mouseX, mouseY);
+        if (slot == null || mixinGuiStorageCore.getFilteredList().size() <= slot) {
+            return null;
+        }
+        return mixinGuiStorageCore.getFilteredList().get(slot).itemStack;
+    }
+}
