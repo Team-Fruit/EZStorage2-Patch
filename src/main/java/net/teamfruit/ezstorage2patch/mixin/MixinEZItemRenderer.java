@@ -28,7 +28,7 @@ public abstract class MixinEZItemRenderer extends RenderItem {
         super.renderItemOverlayIntoGUI(fr, fakeItem, xPosition, yPosition, null);
     }
 
-    @Redirect(method = "renderItemOverlayIntoGUI", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;showDurabilityBar(Lnet/minecraft/item/ItemStack;)Z"))
+    @Redirect(method = "renderItemOverlayIntoGUI", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;showDurabilityBar(Lnet/minecraft/item/ItemStack;)Z", remap = false))
     private boolean redirectRenderItemOverlayIntoGUIShowDurabilityBar(Item item, ItemStack stack) {
         return false;
     }
