@@ -15,7 +15,7 @@ public class JEIGuiHandler implements IAdvancedGuiHandler<GuiStorageCore> {
 
     @Nullable
     @Override
-    public Object getIngredientUnderMouse(GuiStorageCore guiStorageCore, int mouseX, int mouseY) {
+    public Object getIngredientUnderMouse(@NotNull GuiStorageCore guiStorageCore, int mouseX, int mouseY) {
         IGuiStorageCore mixinGuiStorageCore = ((IGuiStorageCore) (Object) guiStorageCore);
         Integer slot = mixinGuiStorageCore.invokeGetSlotAt(mouseX, mouseY);
         if (slot == null || mixinGuiStorageCore.getFilteredList().size() <= slot) {

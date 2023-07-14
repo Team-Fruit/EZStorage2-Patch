@@ -22,6 +22,9 @@ public abstract class MixinGuiStorageCore extends GuiContainerEZ implements IGui
     @Shadow(remap = false)
     private List<ItemGroup> filteredList;
 
+    @Shadow(remap = false)
+    private GuiTextField searchField;
+
     public MixinGuiStorageCore(Container inventorySlotsIn) {
         super(inventorySlotsIn);
     }
@@ -46,5 +49,10 @@ public abstract class MixinGuiStorageCore extends GuiContainerEZ implements IGui
     @Redirect(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiTextField;setText(Ljava/lang/String;)V"))
     private void redirectMouseClickedSetText(GuiTextField searchField, String textIn) {
         this.invokeSearchBoxChange(textIn);
+    }
+
+    @Inject(method = "mouseClicked", at = @At(value = "JUMP", ordinal = 5, shift = At.Shift.BEFORE))
+    private void injectMouseClicked(int mouseX, int mouseY, int mouseButton, CallbackInfo ci) {
+        this.searchField.setFocused(false);
     }
 }
