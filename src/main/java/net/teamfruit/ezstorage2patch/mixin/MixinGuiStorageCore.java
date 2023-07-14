@@ -2,6 +2,7 @@ package net.teamfruit.ezstorage2patch.mixin;
 
 import com.zerofall.ezstorage.gui.client.GuiContainerEZ;
 import com.zerofall.ezstorage.gui.client.GuiStorageCore;
+import com.zerofall.ezstorage.tileentity.TileEntityStorageCore;
 import com.zerofall.ezstorage.util.ItemGroup;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.inventory.Container;
@@ -14,10 +15,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.awt.*;
+import java.util.Collections;
 import java.util.List;
 
 @Mixin(GuiStorageCore.class)
 public abstract class MixinGuiStorageCore extends GuiContainerEZ implements IGuiStorageCore {
+
+    @Shadow(remap = false)
+    private TileEntityStorageCore tileEntity;
 
     @Shadow(remap = false)
     private List<ItemGroup> filteredList;
@@ -37,6 +43,14 @@ public abstract class MixinGuiStorageCore extends GuiContainerEZ implements IGui
     @Override
     public boolean isSearchFieldFocused() {
         return this.searchField.isFocused();
+    }
+
+    @Override
+    public List<Rectangle> getJEIExclusionArea() {
+        if (this.tileEntity.hasSortBox) {
+            return Collections.singletonList(new Rectangle(getGuiLeft() - 108, getGuiTop(), 112, 72));
+        }
+        return null;
     }
 
     @Override

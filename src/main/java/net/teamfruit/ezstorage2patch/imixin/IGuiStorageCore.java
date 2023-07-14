@@ -2,6 +2,7 @@ package net.teamfruit.ezstorage2patch.imixin;
 
 import com.zerofall.ezstorage.util.ItemGroup;
 
+import java.awt.*;
 import java.util.List;
 
 public interface IGuiStorageCore {
@@ -11,4 +12,6 @@ public interface IGuiStorageCore {
     Integer invokeGetSlotAt(int x, int y);
 
     boolean isSearchFieldFocused();
+
+    List<Rectangle> getJEIExclusionArea();
 }

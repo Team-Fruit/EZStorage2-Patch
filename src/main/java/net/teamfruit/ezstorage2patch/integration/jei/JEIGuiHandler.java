@@ -6,6 +6,9 @@ import net.teamfruit.ezstorage2patch.imixin.IGuiStorageCore;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
+import java.util.List;
+
 public class JEIGuiHandler implements IAdvancedGuiHandler<GuiStorageCore> {
 
     @Override
@@ -22,5 +25,11 @@ public class JEIGuiHandler implements IAdvancedGuiHandler<GuiStorageCore> {
             return null;
         }
         return mixinGuiStorageCore.getFilteredList().get(slot).itemStack;
+    }
+
+    @Nullable
+    @Override
+    public List<Rectangle> getGuiExtraAreas(@NotNull GuiStorageCore guiStorageCore) {
+        return ((IGuiStorageCore) (Object) guiStorageCore).getJEIExclusionArea();
     }
 }
