@@ -18,7 +18,7 @@ public class JEIGuiHandler implements IAdvancedGuiHandler<GuiStorageCore> {
     public Object getIngredientUnderMouse(@NotNull GuiStorageCore guiStorageCore, int mouseX, int mouseY) {
         IGuiStorageCore mixinGuiStorageCore = ((IGuiStorageCore) (Object) guiStorageCore);
         Integer slot = mixinGuiStorageCore.invokeGetSlotAt(mouseX, mouseY);
-        if (slot == null || mixinGuiStorageCore.getFilteredList().size() <= slot) {
+        if (slot == null || mixinGuiStorageCore.getFilteredList().size() <= slot || mixinGuiStorageCore.isSearchFieldFocused()) {
             return null;
         }
         return mixinGuiStorageCore.getFilteredList().get(slot).itemStack;

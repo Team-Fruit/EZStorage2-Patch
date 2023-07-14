@@ -35,6 +35,11 @@ public abstract class MixinGuiStorageCore extends GuiContainerEZ implements IGui
     }
 
     @Override
+    public boolean isSearchFieldFocused() {
+        return this.searchField.isFocused();
+    }
+
+    @Override
     @Invoker(value = "getSlotAt", remap = false)
     public abstract Integer invokeGetSlotAt(int x, int y);
 
@@ -55,4 +60,5 @@ public abstract class MixinGuiStorageCore extends GuiContainerEZ implements IGui
     private void injectMouseClicked(int mouseX, int mouseY, int mouseButton, CallbackInfo ci) {
         this.searchField.setFocused(false);
     }
+
 }
