@@ -9,6 +9,7 @@ Patch [EZStorage2](https://github.com/zerofall/EZStorage2) to fix various bugs a
 - Try to more fuzzy search and get GregTech tools and items when arranging recipes with JEI
 - Make JEI's usage, recipes, and bookmarks work on EZStorage
 - Prevents the sorting mode GUI and JEI's bookmarks from overlapping
+- Improve craft performance
 - Fix shift-clicking doesn't craft per stack
 - Fix shift-clicking into a full inventory deletes items if storage is over capacity
 - Fix the inventory tooltip not showing
