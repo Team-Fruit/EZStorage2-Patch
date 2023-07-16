@@ -11,6 +11,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.teamfruit.ezstorage2patch.imixin.IEZInventory;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Invoker;
@@ -27,6 +28,9 @@ public abstract class MixinContainerStorageCoreCrafting extends ContainerStorage
 
     @Shadow(remap = false)
     private IInventory craftResult;
+
+    private boolean craftMatrixChanged = true;
+    private ItemStack craftResultCache;
 
     public MixinContainerStorageCoreCrafting(EntityPlayer player, World world, int x, int y, int z) {
         super(player, world, x, y, z);
@@ -46,8 +50,6 @@ public abstract class MixinContainerStorageCoreCrafting extends ContainerStorage
     private ItemStack redirectTransferStackInSlotGetStackInSlot(InventoryCrafting inv, int index) {
         return inv.getStackInSlot(index).copy();
     }
-
-    private ItemStack craftResultCache;
 
     @Inject(method = "transferStackInSlot", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ItemStack;copy()Lnet/minecraft/item/ItemStack;", ordinal = 1, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
     private void injectTransferStackInSlot1(EntityPlayer playerIn, int index, CallbackInfoReturnable<ItemStack> cir, Slot slotObject, ItemStack[] recipe, ItemStack itemstack1, ItemStack itemstack) {
@@ -138,8 +140,6 @@ public abstract class MixinContainerStorageCoreCrafting extends ContainerStorage
         return slot;
     }
 
-    private boolean craftMatrixChanged = true;
-
     @Inject(method = "tryToPopulateCraftingGrid", at = @At(value = "JUMP", ordinal = 5), remap = false, locals = LocalCapture.CAPTURE_FAILHARD)
     private void injectTryToPopulateCraftingGrid2(ItemStack[] recipe, EntityPlayer playerIn, CallbackInfo ci, int j, Slot slot, ItemStack retrieved) {
         if (retrieved.isEmpty()) {
@@ -160,7 +160,7 @@ public abstract class MixinContainerStorageCoreCrafting extends ContainerStorage
     }
 
     @Override
-    public boolean canMergeSlot(ItemStack stack, Slot slotIn) {
+    public boolean canMergeSlot(@NotNull ItemStack stack, Slot slotIn) {
         return !slotIn.inventory.equals(this.craftResult) && super.canMergeSlot(stack, slotIn);
     }
 }
