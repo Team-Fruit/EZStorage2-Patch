@@ -131,7 +131,7 @@ public abstract class MixinContainerStorageCoreCrafting extends ContainerStorage
         cir.setReturnValue(result);
     }
 
-    @Redirect(method = "tryToPopulateCraftingGrid", at = @At(value = "INVOKE", target = "Lcom/zerofall/ezstorage/gui/server/ContainerStorageCoreCrafting;getSlotFromInventory(Lnet/minecraft/inventory/IInventory;I)Lnet/minecraft/inventory/Slot;"), remap = false)
+    @Redirect(method = "tryToPopulateCraftingGrid", at = @At(value = "INVOKE", target = "Lcom/zerofall/ezstorage/gui/server/ContainerStorageCoreCrafting;getSlotFromInventory(Lnet/minecraft/inventory/IInventory;I)Lnet/minecraft/inventory/Slot;"))
     private Slot redirectTryToPopulateCraftingGridGetSlotFromInventory(ContainerStorageCoreCrafting containerStorageCoreCrafting, IInventory inventory, int slotIn) {
         Slot slot = containerStorageCoreCrafting.getSlotFromInventory(inventory, slotIn);
         if (slot != null && slot.getHasStack()) {
