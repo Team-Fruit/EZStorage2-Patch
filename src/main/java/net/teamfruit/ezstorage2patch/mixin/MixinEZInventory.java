@@ -77,12 +77,6 @@ public abstract class MixinEZInventory implements IEZInventory {
         }
 
         for (ItemStack searchItemStack : itemStacks) {
-            Item searchItem = searchItemStack.getItem();
-            ResourceLocation searchResourceLocation = searchItem.getRegistryName();
-            if (searchResourceLocation == null || !searchResourceLocation.getNamespace().equals("gregtech")) {
-                continue;
-            }
-
             for (ItemGroup invItemGroup : this.inventory) {
                 int searchItemCount = searchItemStack.getCount();
                 if (GTUtil.stackEqualGT(searchItemStack, invItemGroup.itemStack) && searchItemCount <= invItemGroup.count) {
