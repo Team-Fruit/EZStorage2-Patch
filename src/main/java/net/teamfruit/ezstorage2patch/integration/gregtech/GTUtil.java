@@ -1,6 +1,5 @@
 package net.teamfruit.ezstorage2patch.integration.gregtech;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
@@ -57,7 +56,7 @@ public class GTUtil {
             return false;
         }
         try {
-            if(!iGTToolGetDomain.invoke(stack1.getItem()).equals(iGTToolGetDomain.invoke(stack2.getItem()))) {
+            if (!iGTToolGetDomain.invoke(stack1.getItem()).equals(iGTToolGetDomain.invoke(stack2.getItem()))) {
                 return false;
             }
             return iGTToolGetId.invoke(stack1.getItem()).equals(iGTToolGetId.invoke(stack2.getItem()));

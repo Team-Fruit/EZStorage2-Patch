@@ -2,9 +2,7 @@ package net.teamfruit.ezstorage2patch.mixin;
 
 import com.zerofall.ezstorage.util.EZInventory;
 import com.zerofall.ezstorage.util.ItemGroup;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.teamfruit.ezstorage2patch.imixin.IEZInventory;
 import net.teamfruit.ezstorage2patch.integration.gregtech.GTUtil;
 import org.spongepowered.asm.mixin.Mixin;
