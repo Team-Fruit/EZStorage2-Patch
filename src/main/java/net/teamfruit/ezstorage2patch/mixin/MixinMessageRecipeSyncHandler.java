@@ -37,6 +37,9 @@ public abstract class MixinMessageRecipeSyncHandler {
 
         for (ItemStack searchItemStack : this.recipe[x]) {
             for (ItemStack invItemStack : player.inventory.mainInventory) {
+                if (invItemStack.isEmpty()) {
+                    continue;
+                }
                 if (EZInventory.stacksEqualOreDict(searchItemStack, invItemStack) || GTUtil.stackEqualGT(searchItemStack, invItemStack)) {
                     player.inventory.deleteStack(invItemStack);
                     slot.putStack(invItemStack);
