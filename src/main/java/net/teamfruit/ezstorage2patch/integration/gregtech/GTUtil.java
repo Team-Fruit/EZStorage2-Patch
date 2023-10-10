@@ -56,10 +56,10 @@ public class GTUtil {
             return false;
         }
         try {
-            if (!iGTToolGetDomain.invoke(stack1.getItem()).equals(iGTToolGetDomain.invoke(stack2.getItem()))) {
+            if (!iGTToolGetId.invoke(stack1.getItem()).equals(iGTToolGetId.invoke(stack2.getItem()))) {
                 return false;
             }
-            return iGTToolGetId.invoke(stack1.getItem()).equals(iGTToolGetId.invoke(stack2.getItem()));
+            return iGTToolGetDomain.invoke(stack1.getItem()).equals(iGTToolGetDomain.invoke(stack2.getItem()));
         } catch (IllegalAccessException | InvocationTargetException ignored) {
             return false;
         }
