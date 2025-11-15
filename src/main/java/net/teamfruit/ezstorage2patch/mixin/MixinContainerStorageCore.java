@@ -28,13 +28,19 @@ public abstract class MixinContainerStorageCore extends Container {
 
     private IInventory inventory;
 
-    @Inject(method = "<init>", at = @At(value = "TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void injectConstructor(EntityPlayer player, World world, int x, int y, int z, CallbackInfo ci, int startingY, int startingX, IInventory inventory) {
-        this.inventory = inventory;
+    @Inject(method = "<init>", at = @At(value = "TAIL"))
+    private void injectConstructor(EntityPlayer player, World world, int x, int y, int z, CallbackInfo ci) {
+        // Find the storage inventory by looking for non-player inventories in slots
+        for (Slot slot : this.inventorySlots) {
+            if (slot.inventory != player.inventory) {
+                this.inventory = slot.inventory;
+                break;
+            }
+        }
     }
 
-    @Inject(method = "slotClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Container;slotClick(IILnet/minecraft/inventory/ClickType;Lnet/minecraft/entity/player/EntityPlayer;)Lnet/minecraft/item/ItemStack;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private void injectSlotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player, CallbackInfoReturnable<ItemStack> cir, ItemStack val) {
+    @Inject(method = "slotClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Container;slotClick(IILnet/minecraft/inventory/ClickType;Lnet/minecraft/entity/player/EntityPlayer;)Lnet/minecraft/item/ItemStack;"), cancellable = true)
+    private void injectSlotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player, CallbackInfoReturnable<ItemStack> cir) {
         if (slotId >= 0) {
             Slot slot = this.getSlot(slotId);
             if (!(slot instanceof SlotCrafting) && clickTypeIn == ClickType.QUICK_MOVE && slot.canTakeStack(player)) {

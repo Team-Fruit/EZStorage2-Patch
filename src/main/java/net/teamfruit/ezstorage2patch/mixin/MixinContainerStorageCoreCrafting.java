@@ -51,19 +51,24 @@ public abstract class MixinContainerStorageCoreCrafting extends ContainerStorage
         return inv.getStackInSlot(index).copy();
     }
 
-    @Inject(method = "transferStackInSlot", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ItemStack;copy()Lnet/minecraft/item/ItemStack;", ordinal = 1, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void injectTransferStackInSlot1(EntityPlayer playerIn, int index, CallbackInfoReturnable<ItemStack> cir, Slot slotObject, ItemStack[] recipe, ItemStack itemstack1, ItemStack itemstack) {
-        this.craftMatrixChanged = false;
-        this.craftResultCache = itemstack;
+    @Inject(method = "transferStackInSlot", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ItemStack;copy()Lnet/minecraft/item/ItemStack;", ordinal = 1, shift = At.Shift.AFTER))
+    private void injectTransferStackInSlot1(EntityPlayer playerIn, int index, CallbackInfoReturnable<ItemStack> cir) {
+        // Get the crafting result slot and cache its result
+        Slot slotObject = this.getSlot(index);
+        if (slotObject != null && slotObject.getHasStack()) {
+            this.craftMatrixChanged = false;
+            this.craftResultCache = slotObject.getStack().copy();
+        }
     }
 
-    @Inject(method = "transferStackInSlot", at = @At(value = "INVOKE", target = "Lcom/zerofall/ezstorage/gui/server/ContainerStorageCoreCrafting;tryToPopulateCraftingGrid([Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/EntityPlayer;)V", shift = At.Shift.AFTER, remap = false), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private void injectTransferStackInSlot2(EntityPlayer playerIn, int index, CallbackInfoReturnable<ItemStack> cir, Slot slotObject) {
+    @Inject(method = "transferStackInSlot", at = @At(value = "INVOKE", target = "Lcom/zerofall/ezstorage/gui/server/ContainerStorageCoreCrafting;tryToPopulateCraftingGrid([Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/EntityPlayer;)V", shift = At.Shift.AFTER, remap = false), cancellable = true)
+    private void injectTransferStackInSlot2(EntityPlayer playerIn, int index, CallbackInfoReturnable<ItemStack> cir) {
+        Slot slotObject = this.getSlot(index);
         if (this.craftMatrixChanged) {
             this.onCraftMatrixChanged(this.craftMatrix);
             this.craftResultCache = ItemStack.EMPTY;
             cir.setReturnValue(this.craftResultCache);
-        } else {
+        } else if (slotObject != null) {
             slotObject.putStack(this.craftResultCache);
         }
     }
@@ -107,11 +112,24 @@ public abstract class MixinContainerStorageCoreCrafting extends ContainerStorage
     @Invoker(value = "tryToPopulateCraftingGrid", remap = false)
     protected abstract void invokeTryToPopulateCraftingGrid(ItemStack[] recipe, EntityPlayer playerIn);
 
-    @Inject(method = "slotClick", at = @At(value = "INVOKE", target = "Lcom/zerofall/ezstorage/gui/server/ContainerStorageCore;slotClick(IILnet/minecraft/inventory/ClickType;Lnet/minecraft/entity/player/EntityPlayer;)Lnet/minecraft/item/ItemStack;", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private void injectSlotClick1(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player, CallbackInfoReturnable<ItemStack> cir, Slot slot1, ItemStack[] recipe) {
+    @Inject(method = "slotClick", at = @At(value = "INVOKE", target = "Lcom/zerofall/ezstorage/gui/server/ContainerStorageCore;slotClick(IILnet/minecraft/inventory/ClickType;Lnet/minecraft/entity/player/EntityPlayer;)Lnet/minecraft/item/ItemStack;", ordinal = 0), cancellable = true)
+    private void injectSlotClick1(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player, CallbackInfoReturnable<ItemStack> cir) {
+        // Only handle crafting result slot (slot 0)
+        if (slotId != 0) {
+            return;  // Let the original method handle other slots
+        }
+
+        // Get the crafting result slot
+        Slot slot1 = this.getSlot(0);
         if (!slot1.getHasStack()) {
             cir.setReturnValue(ItemStack.EMPTY);
             return;
+        }
+
+        // Get the recipe from the crafting matrix
+        ItemStack[] recipe = new ItemStack[9];
+        for (int i = 0; i < 9; i++) {
+            recipe[i] = this.craftMatrix.getStackInSlot(i).copy();
         }
 
         int heldItemCountBeforeCraft = player.inventory.getItemStack().getCount();
@@ -140,10 +158,14 @@ public abstract class MixinContainerStorageCoreCrafting extends ContainerStorage
         return slot;
     }
 
-    @Inject(method = "tryToPopulateCraftingGrid", at = @At(value = "JUMP", ordinal = 5), remap = false, locals = LocalCapture.CAPTURE_FAILHARD)
-    private void injectTryToPopulateCraftingGrid2(ItemStack[] recipe, EntityPlayer playerIn, CallbackInfo ci, int j, Slot slot, ItemStack retrieved) {
-        if (retrieved.isEmpty()) {
-            this.craftMatrixChanged = true;
+    @Inject(method = "tryToPopulateCraftingGrid", at = @At(value = "JUMP", ordinal = 5), remap = false)
+    private void injectTryToPopulateCraftingGrid2(ItemStack[] recipe, EntityPlayer playerIn, CallbackInfo ci) {
+        // Check if any crafting slot is empty, indicating the grid changed
+        for (int i = 0; i < 9; i++) {
+            if (this.craftMatrix.getStackInSlot(i).isEmpty()) {
+                this.craftMatrixChanged = true;
+                break;
+            }
         }
     }
 

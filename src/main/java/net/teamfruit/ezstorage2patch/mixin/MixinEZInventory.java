@@ -74,6 +74,7 @@ public abstract class MixinEZInventory implements IEZInventory {
             return result;
         }
 
+        ItemGroup toRemove = null;
         for (ItemStack searchItemStack : itemStacks) {
             for (ItemGroup invItemGroup : this.inventory) {
                 int searchItemCount = searchItemStack.getCount();
@@ -82,7 +83,10 @@ public abstract class MixinEZInventory implements IEZInventory {
                     retrieved.setCount(searchItemCount);
                     invItemGroup.count -= searchItemCount;
                     if (invItemGroup.count <= 0) {
-                        this.inventory.remove(invItemGroup);
+                        toRemove = invItemGroup;
+                    }
+                    if (toRemove != null) {
+                        this.inventory.remove(toRemove);
                     }
                     return retrieved;
                 }

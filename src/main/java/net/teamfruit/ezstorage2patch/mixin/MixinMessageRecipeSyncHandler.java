@@ -41,8 +41,9 @@ public abstract class MixinMessageRecipeSyncHandler {
                     continue;
                 }
                 if (EZInventory.stacksEqualOreDict(searchItemStack, invItemStack) || GTUtil.stackEqualGT(searchItemStack, invItemStack)) {
+                    ItemStack extracted = invItemStack.copy();
                     player.inventory.deleteStack(invItemStack);
-                    slot.putStack(invItemStack);
+                    slot.putStack(extracted);
                     return;
                 }
             }
